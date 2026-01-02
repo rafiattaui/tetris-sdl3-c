@@ -4,6 +4,8 @@ bin/
 obj/
 *.exe
 *.dll
+.cache
+compile_commands.json
 *.pdb
 
 # IDE folders
