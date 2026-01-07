@@ -13,7 +13,25 @@ static SDL_Renderer* gRenderer = NULL;
 #define BOARD_WIDTH 10 // 10 blocks wide
 #define BOARD_HEIGHT 20 // 20 blocks high
 
-int blocks[BOARD_HEIGHT][BOARD_WIDTH] = {1, 1}; // 0 = no block, 1 = block
+int blocks[BOARD_HEIGHT][BOARD_WIDTH] = {0}; // 0 = no block, 1-7 blocks
+
+struct Piece {
+    int shape[4][4]; // 4x4 grid for the piece shape
+    int x; // x position on the board
+    int y; // y position on the board
+};
+
+struct Piece current_piece;
+
+SDL_Color colors[] = {
+    {255, 0, 0, 255},    // Red
+    {0, 255, 0, 255},    // Green
+    {0, 0, 255, 255},    // Blue
+    {255, 255, 0, 255},  // Yellow
+    {255, 165, 0, 255},  // Orange
+    {128, 0, 128, 255},  // Purple
+    {0, 255, 255, 255}   // Cyan
+};
 
 void draw_grid(SDL_Renderer *renderer)
 {
