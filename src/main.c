@@ -4,14 +4,14 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
-static SDL_Window* gWindow = NULL;
-static SDL_Renderer* gRenderer = NULL;
-
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 #define BLOCK_SIZE 30 // 30 pixels per block
 #define BOARD_WIDTH 10 // 10 blocks wide
 #define BOARD_HEIGHT 20 // 20 blocks high
+
+static SDL_Window* gWindow = NULL;
+static SDL_Renderer* gRenderer = NULL;
 
 int blocks[BOARD_HEIGHT][BOARD_WIDTH] = {0}; // 0 = no block, 1-7 blocks
 
@@ -21,7 +21,7 @@ struct Piece {
     int y; // y position on the board
 };
 
-struct Piece current_piece;
+struct Piece current_piece; // store current piece
 
 SDL_Color colors[] = {
     {255, 0, 0, 255},    // Red
@@ -75,6 +75,19 @@ void draw_pieces(SDL_Renderer *renderer)
     }
 }
 
+void spawn_new_piece()
+{   // TODO - implement random piece generation
+    // Example: spawn a simple square piece
+    current_piece.shape[0][0] = 1;
+    current_piece.shape[0][1] = 1;
+    current_piece.shape[1][0] = 1;
+    current_piece.shape[1][1] = 1;
+    current_piece.x = 0;
+    current_piece.y = 0;
+}
+
+void moveAndPlace()
+{}
 
 SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 {
