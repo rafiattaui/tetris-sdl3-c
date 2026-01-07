@@ -1,3 +1,4 @@
+#include "SDL3/SDL_pixels.h"
 #include "SDL3/SDL_rect.h"
 #define SDL_MAIN_USE_CALLBACKS 1
 #include <SDL3/SDL.h>
@@ -12,7 +13,7 @@ static SDL_Renderer* gRenderer = NULL;
 #define BOARD_WIDTH 10 // 10 blocks wide
 #define BOARD_HEIGHT 20 // 20 blocks high
 
-int blocks[BOARD_WIDTH][BOARD_HEIGHT] = {0}; // 0 = no block, 1 = block
+int blocks[BOARD_HEIGHT][BOARD_WIDTH] = {0}; // 0 = no block, 1 = block
 
 void draw_grid(SDL_Renderer *renderer)
 {
@@ -37,7 +38,7 @@ void draw_grid(SDL_Renderer *renderer)
     }
 }
 
-void draw_pieces(SDL_Renderer *renderer)
+void draw_pieces(SDL_Renderer *renderer, int blocks[][BOARD_HEIGHT])
 {
     
 }
