@@ -13,7 +13,7 @@ static SDL_Renderer* gRenderer = NULL;
 #define BOARD_WIDTH 10 // 10 blocks wide
 #define BOARD_HEIGHT 20 // 20 blocks high
 
-int blocks[BOARD_HEIGHT][BOARD_WIDTH] = {0}; // 0 = no block, 1 = block
+int blocks[BOARD_HEIGHT][BOARD_WIDTH] = {1, 1}; // 0 = no block, 1 = block
 
 void draw_grid(SDL_Renderer *renderer)
 {
@@ -38,9 +38,23 @@ void draw_grid(SDL_Renderer *renderer)
     }
 }
 
-void draw_pieces(SDL_Renderer *renderer, int blocks[][BOARD_HEIGHT])
+void draw_pieces(SDL_Renderer *renderer)
 {
-    
+    for (int row = 0; row < BOARD_HEIGHT; row++){
+        for (int col = 0; col < BOARD_WIDTH; col++){
+            if (blocks[row][col] == 1){
+            SDL_FRect block = {
+                .x = (float) col * BLOCK_SIZE,
+                .y = (float) row * BLOCK_SIZE,
+                .w = (float) BLOCK_SIZE,
+                .h = (float) BLOCK_SIZE
+            };
+
+            SDL_SetRenderDrawColorFloat(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+            SDL_RenderFillRect(renderer, &block);
+        }
+        }
+    }
 }
 
 
@@ -79,6 +93,7 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     SDL_RenderClear(gRenderer);
 
     draw_grid(gRenderer);
+    draw_pieces(gRenderer);
 
     /* put the newly-cleared rendering on the screen. */
     SDL_RenderPresent(gRenderer);
