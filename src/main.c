@@ -223,6 +223,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
             bool isRotatable = rotate_piece(&currentBlock);
             if (isRotatable){
                 memcpy(&currentBlock.shape, &nextRotation, sizeof(currentBlock.shape));
+                // memcpy is causing crashes for some reason, need to swap to pointer logic
             }
         }
     }
