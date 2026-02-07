@@ -1,0 +1,22 @@
+# Compiler outputs
+build/
+bin/
+obj/
+*.exe
+*.dll
+.cache
+compile_commands.json
+*.pdb
+
+# IDE folders
+.vs/
+.vscode/
+*.user
+*.sln
+*.vcxproj
+*.filters
+vendored/
+
+# OS junk
+.DS_Store
+Thumbs.db
