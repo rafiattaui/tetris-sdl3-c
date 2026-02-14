@@ -6,7 +6,6 @@
 #define SDL_MAIN_USE_CALLBACKS 1
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
-#include <string.h>
 
 static SDL_Window* gWindow = NULL;
 static SDL_Renderer* gRenderer = NULL;
@@ -61,6 +60,14 @@ void draw_grid(SDL_Renderer *renderer)
             };
 
             SDL_RenderRect(renderer, &cell);
+        }
+    }
+}
+
+void cpy_shape(int dstShape[PIECE_HEIGHT][PIECE_WIDTH], int srcShape[PIECE_HEIGHT][PIECE_WIDTH]){
+    for (int row = 0; row < PIECE_HEIGHT; row++){
+        for (int column = 0; column < PIECE_WIDTH; row++){
+            dstShape[row][column] = srcShape[row][column];
         }
     }
 }
@@ -125,13 +132,17 @@ int check_collision(struct Block *piece, int newX, int newY){
 }
 
 // TODO - Needs to swap arrays to pointer logic.
-bool rotate_piece(struct Block *piece){
+bool rotate_piece(int shape[PIECE_HEIGHT][PIECE_WIDTH]){
+
+    SDL_Log("Rotating piece!");
 
     for (int row = 0; row < PIECE_HEIGHT; row++){
-        for (int col = 0; col < PIECE_WIDTH; row++){
-            nextRotation[col][PIECE_HEIGHT - 1 - row] = piece->shape[row][col];
+        for (int col = 0; col < PIECE_WIDTH; col++){
+
         }
     }
+
+    SDL_Log("Finished checking piece rotation");
     return true;
 }   
 
@@ -176,10 +187,10 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[])
 
     SDL_SetRenderLogicalPresentation(gRenderer, SCREEN_HEIGHT, SCREEN_WIDTH, SDL_LOGICAL_PRESENTATION_LETTERBOX);
 
-    currentBlock.shape[0][0] = 1;
-    currentBlock.shape[0][1] = 1;
-    currentBlock.shape[0][2] = 1;
     currentBlock.shape[1][0] = 1;
+    currentBlock.shape[1][1] = 1;
+    currentBlock.shape[1][2] = 1;
+    currentBlock.shape[1][3] = 1;
     currentBlock.x = 0;
     currentBlock.y = 0;
 
@@ -220,10 +231,9 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event)
         else if (event->key.scancode == SDL_SCANCODE_R){
             int nextRotation[PIECE_HEIGHT][PIECE_WIDTH] = {0};
 
-            bool isRotatable = rotate_piece(&currentBlock);
+            bool isRotatable = rotate_piece(currentBlock.shape);
             if (isRotatable){
-                memcpy(&currentBlock.shape, &nextRotation, sizeof(currentBlock.shape));
-                // memcpy is causing crashes for some reason, need to swap to pointer logic
+                // cpy_shape(currentBlock.shape, nextRotation);
             }
         }
     }
@@ -236,10 +246,9 @@ SDL_AppResult SDL_AppIterate(void *appstate)
     currentTime = SDL_GetTicks();
     if (currentTime > lastTime + 1000){
         move_down(&currentBlock);
+        SDL_Log("Collision State: %d\n", collisionState);
         lastTime = currentTime;
     }
-
-    SDL_Log("%d\n", collisionState);
 
     if (collisionState == 3 || collisionState == 2){ // 3 means block collision
         map_piece(&currentBlock);
